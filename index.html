@@ -1,0 +1,880 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .portal {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--color-text-primary);
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0A2342 0%, #16355A 60%, #1B4F72 100%);
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -30px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    color: #B8D4F0;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    border: 0.5px solid rgba(255,255,255,0.2);
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+  .hero p {
+    color: #B8D4F0;
+    font-size: 14px;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+
+  /* MODO TOGGLE */
+  .mode-toggle {
+    display: flex;
+    background: rgba(255,255,255,0.1);
+    border: 0.5px solid rgba(255,255,255,0.2);
+    border-radius: 40px;
+    padding: 4px;
+    max-width: 340px;
+    margin: 0 auto;
+    gap: 4px;
+  }
+  .mode-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 36px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .mode-btn.active {
+    background: #ffffff;
+    color: #0A2342;
+  }
+  .mode-btn i { font-size: 15px; }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    background: var(--color-background-secondary);
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    padding: 0;
+  }
+  .stat-item {
+    flex: 1;
+    padding: 14px 8px;
+    text-align: center;
+    border-right: 0.5px solid var(--color-border-tertiary);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-val {
+    font-size: 18px;
+    font-weight: 500;
+    color: #185FA5;
+    display: block;
+    line-height: 1;
+  }
+  .stat-lbl {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    margin-top: 3px;
+    display: block;
+  }
+
+  /* NAV */
+  .portal-nav {
+    display: flex;
+    gap: 4px;
+    padding: 12px 1.5rem;
+    background: var(--color-background-primary);
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-btn {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 0.5px solid var(--color-border-tertiary);
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    background: transparent;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .nav-btn.active {
+    background: #0A2342;
+    color: #ffffff;
+    border-color: #0A2342;
+  }
+  .nav-btn i { font-size: 13px; }
+
+  /* CONTENT AREA */
+  .content {
+    padding: 1.5rem;
+    background: var(--color-background-tertiary);
+    min-height: 400px;
+  }
+
+  /* SECTION */
+  .section { display: none; }
+  .section.visible { display: block; }
+
+  /* CARDS GRID */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .info-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1rem 1.25rem;
+  }
+  .info-card h3 {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    font-weight: 400;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .info-card .val {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+  .info-card .sub {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+  .badge-info {
+    display: inline-block;
+    background: var(--color-background-info);
+    color: var(--color-text-info);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-top: 4px;
+  }
+  .badge-success {
+    display: inline-block;
+    background: var(--color-background-success);
+    color: var(--color-text-success);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-top: 4px;
+  }
+  .badge-warn {
+    display: inline-block;
+    background: var(--color-background-warning);
+    color: var(--color-text-warning);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-top: 4px;
+  }
+
+  /* MODE ALERT */
+  .mode-alert {
+    background: #E6F1FB;
+    border: 0.5px solid #B5D4F4;
+    border-left: 3px solid #185FA5;
+    border-radius: var(--border-radius-md);
+    padding: 12px 16px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .mode-alert i { color: #185FA5; font-size: 18px; margin-top: 1px; flex-shrink: 0; }
+  .mode-alert-text p { font-size: 13px; color: #0C447C; }
+  .mode-alert-text p:first-child { font-weight: 500; margin-bottom: 2px; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title i { font-size: 20px; color: #185FA5; }
+
+  /* REQUIREMENTS LIST */
+  .req-list { list-style: none; margin-bottom: 1.5rem; }
+  .req-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .req-item i { color: #185FA5; flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+  .req-item .req-label { font-weight: 500; display: block; }
+  .req-item .req-desc { color: var(--color-text-secondary); font-size: 12px; }
+
+  /* TIMELINE */
+  .timeline { margin-bottom: 1.5rem; }
+  .tl-item {
+    display: flex;
+    gap: 12px;
+    position: relative;
+    padding-bottom: 1.2rem;
+  }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 28px;
+  }
+  .tl-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .tl-dot.done { background: #0F6E56; color: #E1F5EE; }
+  .tl-dot.active { background: #185FA5; color: #E6F1FB; }
+  .tl-dot.upcoming { background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); }
+  .tl-line {
+    width: 1px;
+    flex: 1;
+    background: var(--color-border-tertiary);
+    margin: 3px 0 0;
+    min-height: 16px;
+  }
+  .tl-content {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 14px;
+    flex: 1;
+  }
+  .tl-title { font-size: 13px; font-weight: 500; }
+  .tl-date { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+
+  /* FORM */
+  .form-row { margin-bottom: 14px; }
+  .form-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 5px; display: block; font-weight: 500; }
+  .form-input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+  }
+  .form-input:focus { outline: none; border-color: #185FA5; box-shadow: 0 0 0 2px rgba(24,95,165,0.12); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #0A2342;
+    color: #ffffff;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .submit-btn:hover { background: #16355A; }
+
+  /* FAQ */
+  .faq-item {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .faq-q {
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    user-select: none;
+  }
+  .faq-q i { color: var(--color-text-secondary); font-size: 15px; transition: transform 0.2s; }
+  .faq-q.open i { transform: rotate(180deg); }
+  .faq-a {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    padding: 0 14px 12px;
+    line-height: 1.6;
+    display: none;
+  }
+  .faq-a.visible { display: block; }
+
+  /* CONTACT CARDS */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+  .contact-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1rem;
+    text-align: center;
+  }
+  .contact-icon {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: #E6F1FB;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 8px;
+  }
+  .contact-icon i { color: #185FA5; font-size: 18px; }
+  .contact-card .c-name { font-size: 13px; font-weight: 500; }
+  .contact-card .c-detail { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+
+  /* STATUS TRACKER */
+  .tracker-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .tracker-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  .t-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+  }
+  .t-circle {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .t-circle.done { background: #0F6E56; color: #E1F5EE; }
+  .t-circle.current { background: #185FA5; color: #E6F1FB; border: 2px solid #378ADD; }
+  .t-circle.pending { background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); }
+  .t-label { font-size: 10px; color: var(--color-text-secondary); text-align: center; max-width: 60px; line-height: 1.3; }
+  .t-line { flex: 1; height: 1px; background: var(--color-border-tertiary); margin: 0 4px; margin-bottom: 22px; }
+  .t-line.done { background: #0F6E56; }
+
+  .section-subtitle { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 1rem; }
+
+  /* SUCCESS MODAL */
+  .success-msg {
+    background: var(--color-background-success);
+    border: 0.5px solid var(--color-border-success);
+    border-radius: var(--border-radius-md);
+    padding: 14px;
+    text-align: center;
+    display: none;
+    margin-top: 12px;
+  }
+  .success-msg i { color: var(--color-text-success); font-size: 24px; display: block; margin-bottom: 6px; }
+  .success-msg p { color: var(--color-text-success); font-size: 13px; font-weight: 500; }
+</style>
+
+<h2 class="sr-only" style="position:absolute;left:-9999px">Portal de Admisiones Estudiantil</h2>
+
+<div class="portal">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge"><i class="ti ti-school" aria-hidden="true"></i> Departamento de Admisiones</div>
+    <h1>Portal de Admisiones</h1>
+    <p>Bienvenido — elige tu modalidad de ingreso</p>
+
+    <div class="mode-toggle" id="modeToggle">
+      <button class="mode-btn active" onclick="setMode('presencial')" id="btn-presencial">
+        <i class="ti ti-building" aria-hidden="true"></i> Presencial
+      </button>
+      <button class="mode-btn" onclick="setMode('linea')" id="btn-linea">
+        <i class="ti ti-device-laptop" aria-hidden="true"></i> En línea
+      </button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-val">3</span>
+      <span class="stat-lbl">Periodos anuales</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-val">15+</span>
+      <span class="stat-lbl">Programas</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-val">Jun 30</span>
+      <span class="stat-lbl">Cierre convocatoria</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-val">100%</span>
+      <span class="stat-lbl">Digital</span>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="portal-nav">
+    <button class="nav-btn active" onclick="showSection('inicio')" id="nav-inicio"><i class="ti ti-home" aria-hidden="true"></i> Inicio</button>
+    <button class="nav-btn" onclick="showSection('requisitos')" id="nav-requisitos"><i class="ti ti-checklist" aria-hidden="true"></i> Requisitos</button>
+    <button class="nav-btn" onclick="showSection('fechas')" id="nav-fechas"><i class="ti ti-calendar" aria-hidden="true"></i> Fechas</button>
+    <button class="nav-btn" onclick="showSection('solicitud')" id="nav-solicitud"><i class="ti ti-forms" aria-hidden="true"></i> Solicitud</button>
+    <button class="nav-btn" onclick="showSection('estatus')" id="nav-estatus"><i class="ti ti-progress" aria-hidden="true"></i> Estatus</button>
+    <button class="nav-btn" onclick="showSection('faq')" id="nav-faq"><i class="ti ti-help-circle" aria-hidden="true"></i> FAQ</button>
+    <button class="nav-btn" onclick="showSection('contacto')" id="nav-contacto"><i class="ti ti-phone" aria-hidden="true"></i> Contacto</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- INICIO -->
+    <div class="section visible" id="sec-inicio">
+      <div class="mode-alert" id="modeAlert">
+        <i class="ti ti-building" aria-hidden="true" id="alertIcon"></i>
+        <div class="mode-alert-text">
+          <p id="alertTitle">Modalidad Presencial seleccionada</p>
+          <p id="alertDesc">Clases en campus. Horarios matutinos, vespertinos y nocturnos disponibles.</p>
+        </div>
+      </div>
+      <div class="section-title"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Resumen de admisión</div>
+      <div class="card-grid">
+        <div class="info-card">
+          <h3><i class="ti ti-clock" aria-hidden="true"></i> Duración proceso</h3>
+          <div class="val" id="duracion">2 – 4 semanas</div>
+          <div class="sub" id="duracion-sub">desde solicitud hasta respuesta</div>
+        </div>
+        <div class="info-card">
+          <h3><i class="ti ti-coin" aria-hidden="true"></i> Costo inscripción</h3>
+          <div class="val" id="costo">$1,200 MXN</div>
+          <span class="badge-info" id="costo-badge">Primer periodo</span>
+        </div>
+        <div class="info-card">
+          <h3><i class="ti ti-users" aria-hidden="true"></i> Cupo disponible</h3>
+          <div class="val">Limitado</div>
+          <span class="badge-warn">30 lugares por grupo</span>
+        </div>
+        <div class="info-card">
+          <h3><i class="ti ti-certificate" aria-hidden="true"></i> Nivel de ingreso</h3>
+          <div class="val">Licenciatura</div>
+          <span class="badge-success">Abierto</span>
+        </div>
+      </div>
+
+      <div class="section-title"><i class="ti ti-star" aria-hidden="true"></i> ¿Por qué elegirnos?</div>
+      <ul class="req-list">
+        <li class="req-item"><i class="ti ti-check" aria-hidden="true"></i><div><span class="req-label">Reconocimiento oficial SEP</span><span class="req-desc">Estudios con validez oficial en toda la República Mexicana</span></div></li>
+        <li class="req-item"><i class="ti ti-check" aria-hidden="true"></i><div><span class="req-label">Becas disponibles</span><span class="req-desc">Hasta 50% de descuento en inscripción para alumnos de excelencia</span></div></li>
+        <li class="req-item"><i class="ti ti-check" aria-hidden="true"></i><div><span class="req-label">Acompañamiento académico</span><span class="req-desc">Asesorías personalizadas y tutorías durante todo el proceso</span></div></li>
+        <li class="req-item"><i class="ti ti-check" aria-hidden="true"></i><div><span class="req-label">Bolsa de trabajo</span><span class="req-desc">Red de empleadores vinculados a nuestra institución</span></div></li>
+      </ul>
+    </div>
+
+    <!-- REQUISITOS -->
+    <div class="section" id="sec-requisitos">
+      <div class="section-title"><i class="ti ti-checklist" aria-hidden="true"></i> Documentos requeridos</div>
+      <p class="section-subtitle" id="req-subtitle">Modalidad Presencial — presenta originals y copias en ventanilla</p>
+      <ul class="req-list" id="req-list">
+        <li class="req-item"><i class="ti ti-file-text" aria-hidden="true"></i><div><span class="req-label">Certificado de bachillerato</span><span class="req-desc">Original y 2 copias legibles. Si está en trámite, constancia oficial.</span></div></li>
+        <li class="req-item"><i class="ti ti-id" aria-hidden="true"></i><div><span class="req-label">Identificación oficial vigente</span><span class="req-desc">INE, pasaporte o cartilla militar (mayores de 18 años)</span></div></li>
+        <li class="req-item"><i class="ti ti-file" aria-hidden="true"></i><div><span class="req-label">CURP</span><span class="req-desc">Copia impresa y legible; puede obtenerse en gob.mx</span></div></li>
+        <li class="req-item"><i class="ti ti-map-pin" aria-hidden="true"></i><div><span class="req-label">Comprobante de domicilio</span><span class="req-desc">No mayor a 3 meses de antigüedad (luz, agua, teléfono fijo)</span></div></li>
+        <li class="req-item"><i class="ti ti-camera" aria-hidden="true"></i><div><span class="req-label">Fotografías recientes</span><span class="req-desc" id="foto-desc">6 fotografías tamaño infantil, fondo blanco, de frente</span></div></li>
+        <li class="req-item"><i class="ti ti-coin" aria-hidden="true"></i><div><span class="req-label">Comprobante de pago de inscripción</span><span class="req-desc">Ficha de depósito o transferencia a la cuenta institucional</span></div></li>
+        <li class="req-item" id="req-extra"><i class="ti ti-building" aria-hidden="true"></i><div><span class="req-label" id="extra-label">Examen de admisión</span><span class="req-desc" id="extra-desc">Presentar examen en campus en fecha y hora asignada</span></div></li>
+      </ul>
+    </div>
+
+    <!-- FECHAS -->
+    <div class="section" id="sec-fechas">
+      <div class="section-title"><i class="ti ti-calendar" aria-hidden="true"></i> Calendario de admisión 2025</div>
+      <p class="section-subtitle">Periodo Agosto–Diciembre 2025 — Seguimiento en tiempo real</p>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot done"><i class="ti ti-check" aria-hidden="true"></i></div><div class="tl-line done"></div></div>
+          <div class="tl-content"><div class="tl-title">Apertura de convocatoria</div><div class="tl-date">1 de mayo, 2025</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot done"><i class="ti ti-check" aria-hidden="true"></i></div><div class="tl-line done"></div></div>
+          <div class="tl-content"><div class="tl-title">Inicio de registro en línea</div><div class="tl-date">5 de mayo, 2025</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot active"><i class="ti ti-clock" aria-hidden="true"></i></div><div class="tl-line"></div></div>
+          <div class="tl-content"><div class="tl-title" style="color:#185FA5">Recepción de documentos (activo)</div><div class="tl-date">Del 10 de mayo al 30 de junio, 2025</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot upcoming">4</div><div class="tl-line"></div></div>
+          <div class="tl-content"><div class="tl-title">Examen / entrevista de admisión</div><div class="tl-date" id="exam-date">5 – 15 de julio, 2025</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot upcoming">5</div><div class="tl-line"></div></div>
+          <div class="tl-content"><div class="tl-title">Publicación de resultados</div><div class="tl-date">20 de julio, 2025</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot upcoming">6</div><div class="tl-line"></div></div>
+          <div class="tl-content"><div class="tl-title">Pago de inscripción</div><div class="tl-date">21 – 31 de julio, 2025</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot-wrap"><div class="tl-dot upcoming">7</div></div>
+          <div class="tl-content"><div class="tl-title">Inicio de clases</div><div class="tl-date">11 de agosto, 2025</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOLICITUD -->
+    <div class="section" id="sec-solicitud">
+      <div class="section-title"><i class="ti ti-forms" aria-hidden="true"></i> Formulario de pre-registro</div>
+      <p class="section-subtitle">Completa tu solicitud de admisión. Recibirás confirmación por correo.</p>
+
+      <div class="info-card" style="margin-bottom:1.2rem">
+        <div class="form-grid">
+          <div class="form-row">
+            <label class="form-label">Nombre(s)</label>
+            <input class="form-input" type="text" placeholder="Ej. María Fernanda" id="f-nombre">
+          </div>
+          <div class="form-row">
+            <label class="form-label">Apellidos</label>
+            <input class="form-input" type="text" placeholder="Ej. González Ramírez" id="f-apellido">
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-row">
+            <label class="form-label">Correo electrónico</label>
+            <input class="form-input" type="email" placeholder="correo@ejemplo.com" id="f-email">
+          </div>
+          <div class="form-row">
+            <label class="form-label">Teléfono / WhatsApp</label>
+            <input class="form-input" type="tel" placeholder="844 000 0000" id="f-tel">
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Carrera de interés</label>
+          <select class="form-input" id="f-carrera">
+            <option value="">Selecciona una carrera...</option>
+            <option>Administración de Empresas</option>
+            <option>Contaduría Pública</option>
+            <option>Ingeniería en Sistemas</option>
+            <option>Psicología</option>
+            <option>Derecho</option>
+            <option>Mercadotecnia</option>
+            <option>Medicina</option>
+            <option>Arquitectura</option>
+            <option>Educación</option>
+            <option>Otro (especificar en comentarios)</option>
+          </select>
+        </div>
+        <div class="form-grid">
+          <div class="form-row">
+            <label class="form-label">Turno preferido</label>
+            <select class="form-input" id="f-turno">
+              <option>Matutino (7:00–13:00)</option>
+              <option>Vespertino (13:00–19:00)</option>
+              <option>Nocturno (19:00–22:00)</option>
+              <option id="turno-sabatino">Sabatino (sáb./dom.)</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Modalidad</label>
+            <select class="form-input" id="f-modalidad">
+              <option id="mod-pres">Presencial</option>
+              <option id="mod-lin">En línea</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">¿Cómo te enteraste de nosotros?</label>
+          <select class="form-input">
+            <option>Redes sociales</option>
+            <option>Recomendación de un amigo/familiar</option>
+            <option>Búsqueda en internet</option>
+            <option>Periódico / radio</option>
+            <option>Visita a campus</option>
+            <option>Feria vocacional</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Comentarios o preguntas adicionales</label>
+          <textarea class="form-input" rows="3" placeholder="Escribe aquí si tienes alguna duda o comentario especial..." style="resize:vertical"></textarea>
+        </div>
+        <button class="submit-btn" onclick="submitForm()"><i class="ti ti-send" aria-hidden="true"></i> Enviar pre-registro</button>
+        <div class="success-msg" id="successMsg">
+          <i class="ti ti-circle-check" aria-hidden="true"></i>
+          <p>¡Pre-registro enviado con éxito! Revisa tu correo para confirmar tu solicitud.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESTATUS -->
+    <div class="section" id="sec-estatus">
+      <div class="section-title"><i class="ti ti-progress" aria-hidden="true"></i> Rastrear mi solicitud</div>
+      <p class="section-subtitle">Ingresa tu folio de registro para ver el estatus de tu solicitud.</p>
+
+      <div style="display:flex;gap:8px;margin-bottom:1.5rem">
+        <input class="form-input" type="text" placeholder="Folio de solicitud (ej. ADM-2025-00145)" id="folioInput" style="flex:1">
+        <button class="submit-btn" style="width:auto;padding:9px 18px" onclick="checkStatus()"><i class="ti ti-search" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="tracker-card" id="trackerResult">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:13px;font-weight:500">ADM-2025-00145 — Ejemplo</span>
+          <span class="badge-info">En revisión</span>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">Carrera: Administración de Empresas · Presencial</div>
+        <div class="tracker-steps">
+          <div class="t-step">
+            <div class="t-circle done"><i class="ti ti-check" aria-hidden="true"></i></div>
+            <div class="t-label">Registro</div>
+          </div>
+          <div class="t-line done"></div>
+          <div class="t-step">
+            <div class="t-circle done"><i class="ti ti-check" aria-hidden="true"></i></div>
+            <div class="t-label">Docs entregados</div>
+          </div>
+          <div class="t-line done"></div>
+          <div class="t-step">
+            <div class="t-circle current">3</div>
+            <div class="t-label">Revisión</div>
+          </div>
+          <div class="t-line"></div>
+          <div class="t-step">
+            <div class="t-circle pending">4</div>
+            <div class="t-label">Examen</div>
+          </div>
+          <div class="t-line"></div>
+          <div class="t-step">
+            <div class="t-circle pending">5</div>
+            <div class="t-label">Aceptado</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-size:12px;color:var(--color-text-secondary);background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 12px">
+          <i class="ti ti-info-circle" aria-hidden="true" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>
+          Tu expediente está siendo revisado por el departamento de admisiones. Recibirás un correo en 3–5 días hábiles.
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="section" id="sec-faq">
+      <div class="section-title"><i class="ti ti-help-circle" aria-hidden="true"></i> Preguntas frecuentes</div>
+      <div id="faq-container"></div>
+    </div>
+
+    <!-- CONTACTO -->
+    <div class="section" id="sec-contacto">
+      <div class="section-title"><i class="ti ti-phone" aria-hidden="true"></i> Contacta con Admisiones</div>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-icon"><i class="ti ti-phone" aria-hidden="true"></i></div>
+          <div class="c-name">Llamadas</div>
+          <div class="c-detail">844 123 4567</div>
+          <div class="c-detail" style="margin-top:2px">Lun–Vie 8:00–18:00</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i></div>
+          <div class="c-name">WhatsApp</div>
+          <div class="c-detail">844 123 4568</div>
+          <div class="c-detail" style="margin-top:2px">Respuesta en &lt; 2 horas</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon"><i class="ti ti-mail" aria-hidden="true"></i></div>
+          <div class="c-name">Correo</div>
+          <div class="c-detail">admisiones@escuela.edu.mx</div>
+          <div class="c-detail" style="margin-top:2px">Resp. en 24–48 horas</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon"><i class="ti ti-map-pin" aria-hidden="true"></i></div>
+          <div class="c-name">Ventanilla</div>
+          <div class="c-detail">Edificio A, planta baja</div>
+          <div class="c-detail" style="margin-top:2px">Lun–Vie 8:00–17:00</div>
+        </div>
+      </div>
+
+      <div class="section-title" style="font-size:16px"><i class="ti ti-map" aria-hidden="true"></i> Horarios de atención</div>
+      <ul class="req-list">
+        <li class="req-item"><i class="ti ti-calendar" aria-hidden="true"></i><div><span class="req-label">Lunes a viernes</span><span class="req-desc">8:00 a.m. – 7:00 p.m. (incluye atención nocturna en línea)</span></div></li>
+        <li class="req-item"><i class="ti ti-calendar" aria-hidden="true"></i><div><span class="req-label">Sábados</span><span class="req-desc">9:00 a.m. – 2:00 p.m. (solo en periodo de admisiones)</span></div></li>
+        <li class="req-item"><i class="ti ti-device-laptop" aria-hidden="true"></i><div><span class="req-label">Chat en línea</span><span class="req-desc">Disponible 24/7 para dudas sobre requisitos y fechas</span></div></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let currentMode = 'presencial';
+  let currentSection = 'inicio';
+
+  const faqData = {
+    presencial: [
+      { q: '¿Puedo entregar documentos de manera parcial?', a: 'Sí, puedes iniciar tu expediente con documentos incompletos, pero debes completarlo antes del cierre de la convocatoria. El expediente incompleto no pasa a revisión final.' },
+      { q: '¿El examen de admisión tiene costo?', a: 'No, el examen de admisión es gratuito. Solo se cobra la inscripción una vez aceptado el alumno.' },
+      { q: '¿Cuántos intentos tengo para el examen de admisión?', a: 'En modalidad presencial tienes hasta 2 intentos por periodo de admisiones. Se toma el puntaje más alto.' },
+      { q: '¿Puedo cambiar de carrera después de ser admitido?', a: 'Sí, puedes solicitar cambio de carrera dentro de los primeros 15 días del semestre, sujeto a disponibilidad de cupos.' },
+      { q: '¿Cómo sé si mis documentos ya fueron aceptados?', a: 'Recibirás un correo de confirmación y una notificación en tu portal cuando tu expediente haya sido validado por el área de admisiones.' },
+      { q: '¿Qué pasa si mi certificado está en trámite?', a: 'Puedes presentar una constancia oficial de tu bachillerato que acredite que estás en proceso. Deberás entregar el certificado original a más tardar al inicio del semestre.' }
+    ],
+    linea: [
+      { q: '¿Cómo subo mis documentos en modalidad en línea?', a: 'Debes escanear o fotografiar tus documentos en formato PDF o JPG (mínimo 300 dpi) y subirlos a través del sistema de admisiones en línea. Recibirás un correo de confirmación de cada documento.' },
+      { q: '¿El examen de admisión en línea es supervisado?', a: 'Sí, el examen se realiza mediante plataforma con proctoring (cámara activada) durante toda la evaluación. Necesitarás computadora con cámara web y micrófono.' },
+      { q: '¿Qué requisitos técnicos necesito?', a: 'Computadora con Windows 10 o macOS 10.14+, navegador Chrome o Firefox actualizado, conexión estable de al menos 5 Mbps, y cámara web funcional.' },
+      { q: '¿Las clases en línea son en vivo o grabadas?', a: 'Ambas opciones están disponibles según el programa. La mayoría de materias tienen sesiones en vivo con grabación disponible por 72 horas después de cada clase.' },
+      { q: '¿Puedo cambiar a modalidad presencial más adelante?', a: 'Sí, el cambio de modalidad se puede solicitar al inicio de cada semestre, sujeto a disponibilidad y revisión de tu expediente académico.' },
+      { q: '¿Los títulos y cédulas tienen la misma validez que presencial?', a: 'Sí, los estudios tienen exactamente la misma validez oficial ante la SEP, independientemente de la modalidad. Los títulos son idénticos.' }
+    ]
+  };
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('btn-presencial').classList.toggle('active', mode === 'presencial');
+    document.getElementById('btn-linea').classList.toggle('active', mode === 'linea');
+
+    const isLinea = mode === 'linea';
+    document.getElementById('alertIcon').className = isLinea ? 'ti ti-device-laptop' : 'ti ti-building';
+    document.getElementById('alertTitle').textContent = isLinea ? 'Modalidad En Línea seleccionada' : 'Modalidad Presencial seleccionada';
+    document.getElementById('alertDesc').textContent = isLinea
+      ? 'Estudia desde cualquier lugar. Clases en vivo y material grabado disponible 24/7.'
+      : 'Clases en campus. Horarios matutinos, vespertinos y nocturnos disponibles.';
+
+    document.getElementById('duracion').textContent = isLinea ? '1 – 2 semanas' : '2 – 4 semanas';
+    document.getElementById('duracion-sub').textContent = isLinea ? 'proceso 100% digital' : 'desde solicitud hasta respuesta';
+    document.getElementById('req-subtitle').textContent = isLinea
+      ? 'Modalidad En Línea — sube documentos escaneados al sistema'
+      : 'Modalidad Presencial — presenta originales y copias en ventanilla';
+    document.getElementById('foto-desc').textContent = isLinea
+      ? 'Fotografía digital reciente (selfie formal), formato JPG, fondo claro'
+      : '6 fotografías tamaño infantil, fondo blanco, de frente';
+    document.getElementById('extra-label').textContent = isLinea ? 'Examen en línea (proctored)' : 'Examen de admisión en campus';
+    document.getElementById('extra-desc').textContent = isLinea
+      ? 'Examen en plataforma con cámara activada; se asigna fecha y hora por correo'
+      : 'Presentar examen en campus en fecha y hora asignada';
+    document.getElementById('exam-date').textContent = isLinea
+      ? '5 – 20 de julio, 2025 (en línea, cita previa)'
+      : '5 – 15 de julio, 2025';
+
+    const faqContainer = document.getElementById('faq-container');
+    faqContainer.innerHTML = '';
+    faqData[mode].forEach((item, i) => {
+      const el = document.createElement('div');
+      el.className = 'faq-item';
+      el.innerHTML = `<div class="faq-q" id="fq-${i}" onclick="toggleFaq(${i})"><span>${item.q}</span><i class="ti ti-chevron-down" aria-hidden="true"></i></div><div class="faq-a" id="fa-${i}">${item.a}</div>`;
+      faqContainer.appendChild(el);
+    });
+  }
+
+  function toggleFaq(i) {
+    const q = document.getElementById('fq-'+i);
+    const a = document.getElementById('fa-'+i);
+    q.classList.toggle('open');
+    a.classList.toggle('visible');
+  }
+
+  function showSection(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('sec-'+name).classList.add('visible');
+    document.getElementById('nav-'+name).classList.add('active');
+    currentSection = name;
+  }
+
+  function submitForm() {
+    const nombre = document.getElementById('f-nombre').value;
+    const email = document.getElementById('f-email').value;
+    if (!nombre || !email) {
+      alert('Por favor completa al menos tu nombre y correo electrónico.');
+      return;
+    }
+    document.getElementById('successMsg').style.display = 'block';
+    setTimeout(() => { document.getElementById('successMsg').style.display = 'none'; }, 5000);
+  }
+
+  function checkStatus() {
+    document.getElementById('trackerResult').style.display = 'block';
+  }
+
+  setMode('presencial');
+  document.getElementById('trackerResult').style.display = 'block';
+</script>
